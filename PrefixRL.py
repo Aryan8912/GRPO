@@ -120,3 +120,26 @@ def update_policy_weights(pi, states, target_probs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+
+
+"""
+Algorithm 1 PrefixRL with Natural Policy Gradients
+Require: Base policy π0, off-policy data Doff , horizon H, iterations T , step size η, Q function class F .
+1: Initialize the iterative algorithm with base policy: π1 ← π0.
+2: for t = 1,...,T do
+3: Initialize dataset Dt ← {}.
+4: for i = 1...n do
+5: Sample (sh,aoffh ) uniformly across state-action pairs in Doff . ▷ sample prefixed problem
+6: ah ← aoffh with probability 1/2 and ∼ πt(· | sh) otherwise.
+7: Execute πt(· | sh,ah) from step h+1 through H to obtain the full trace with reward r.
+8: Dt ← Dt ∪(sh,ah,r).
+9: Critic fit (regression oracle):
+10: ˆQt ← argminf ∈FP(s,a,r)∈Dt (f (s,a)−r)2.
+11: Natural policy update (mirror ascent): ▷ performed state-wise
+12: πt+1(· | s) ← argminp ⟨− ˆQt(s,·),p⟩+ 1η KL(p∥πt(· | s)).
+13: end for
+14: end for
+15: return  ̄πT ← 1TPT
+t=1πt. ▷ return mixture policy
+"""
